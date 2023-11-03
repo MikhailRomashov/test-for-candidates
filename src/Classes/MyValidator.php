@@ -1,9 +1,8 @@
 <?php
-namespace App;
+
 
 use Symfony\Component\Validator\Validation as Validation;
 use Symfony\Component\Validator\Constraints as Constraints;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class MyValidator
 {
@@ -13,7 +12,7 @@ class MyValidator
         $this->validator = Validation::createValidator();
     }
 
-    public function check($json)
+    public function check(array $param)
     {
         /*DEXXXXXXXXX - для жителей Германии,
 
@@ -29,25 +28,27 @@ class MyValidator
         X - любая цифра от 0 до 9,
         Y - любая буква
         */
-        // вычленить код страны
-        // получить данные о длине налогового номера
-        // если такой страны нет вернуть ошибку
 
-        $constraints = new Constraints\Collection( [
-                'product' => [
-                    new Constraints\NotBlank(),
-                    new Constraints\Regex('(\d*)')
-                ],
-                'taxNumber' => [
-                    new Constraints\NotBlank(),
-                    new Constraints\Regex('^(?=.{13,})([A-Z]*\d{11})$')
-                ],
-                'couponCode' => [
-                    new Constraints\Regex('([A-Z]\d{2})')
-                ]  ]
-        );
+        // формирование проверочного массива
+        $checkList =[
+            'product' => [
+                new Constraints\Regex('(\d{'.strlen($param["product"]).'})')
+            ],
+            'taxNumber' => [
+                new Constraints\Length(min:$param["taxNumberLength"],max: $param["taxNumberLength"]),
+                new Constraints\Regex('([A-Z]*\d{'.$param["digitsLength"].'})')
+            ]];
 
-        $errors = $this->validator->validate( ['product' => 1,'taxNumber' =>"IT12345678900"], $constraints );
+        // добавление проверки необязательных полей (купон)
+        if($param["couponCode"])
+            $checkList['couponCode'] = [   new Constraints\Regex('([A-Z]\d{2})')];
+
+        $constraints = new Constraints\Collection($checkList );
+
+        $errors = $this->validator->validate( $param, $constraints );
+
+        if (count($errors) > 0) return (string) $errors;
+
 
     }
 }
