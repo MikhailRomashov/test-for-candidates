@@ -43,11 +43,14 @@ class MyValidator
         if($request["couponCode"])
             $checkList['couponCode'] = [   new Constraints\Regex('([A-Z]\d{2})')];
 
+        if($request["paymentProcessor"])
+            $checkList['paymentProcessor'] = [   new Constraints\Regex('([A-z]*)')];
+
         $constraints = new Constraints\Collection($checkList );
 
         $errors = $this->validator->validate( $request, $constraints );
 
-        if (count($errors) > 0) return (string) $errors;
+        if (count($errors) > 0) return array("error" =>(string) $errors);
 
 
     }

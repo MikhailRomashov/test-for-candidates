@@ -1,11 +1,13 @@
 version: '3'
 services:
   php:
-    image: php:7.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
     - ./:/app
     ports:
-    - 8000:8000
+    - 80:8000
     command: php -S 0.0.0.0:8000 -t /app
 
   nginx:
@@ -15,6 +17,7 @@ services:
     image: mysql:5.6
     ports:
       - 3306:3306
+    container_name: sqlserver
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - LANG=C.UTF-8

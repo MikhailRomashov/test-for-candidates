@@ -37,8 +37,8 @@ class Json
         header("HTTP/1.0 400 BAD_REQUEST");
         echo "
         {   'Status':'Error',
-            'Error':"   .$json["message"].",
-            'Json' : "  .$json["json"]."
+            'Error':"   .$message.",
+            'Json' : "  .$json."
         }
         ";
         die;
