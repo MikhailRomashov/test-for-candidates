@@ -12,7 +12,7 @@ class MyValidator
         $this->validator = Validation::createValidator();
     }
 
-    public function check(array $param)
+    public function check(array $request, array $param)
     {
         /*DEXXXXXXXXX - для жителей Германии,
 
@@ -32,7 +32,7 @@ class MyValidator
         // формирование проверочного массива
         $checkList =[
             'product' => [
-                new Constraints\Regex('(\d{'.strlen($param["product"]).'})')
+                new Constraints\Regex('(\d{'.strlen($request["product"]).'})')
             ],
             'taxNumber' => [
                 new Constraints\Length(min:$param["taxNumberLength"],max: $param["taxNumberLength"]),
@@ -40,12 +40,12 @@ class MyValidator
             ]];
 
         // добавление проверки необязательных полей (купон)
-        if($param["couponCode"])
+        if($request["couponCode"])
             $checkList['couponCode'] = [   new Constraints\Regex('([A-Z]\d{2})')];
 
         $constraints = new Constraints\Collection($checkList );
 
-        $errors = $this->validator->validate( $param, $constraints );
+        $errors = $this->validator->validate( $request, $constraints );
 
         if (count($errors) > 0) return (string) $errors;
 
