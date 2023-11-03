@@ -7,7 +7,8 @@ class Json
     {
         $array = json_decode($json, true);
 
-        switch (json_last_error()) {
+        switch (json_last_error())
+        {
             case JSON_ERROR_NONE:
                 header("HTTP/1.0 200 OK");
                 return $array;
@@ -41,7 +42,7 @@ class Json
         }
         ";
         die;
-        
+
 
 
     }
