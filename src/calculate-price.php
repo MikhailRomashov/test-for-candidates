@@ -11,6 +11,7 @@ require_once "Classes/HTTPanswer.php";
 // считаем цену
 $http     = new HTTPanswer();
 $products = new Products();
+
 $good=$products->Calculate(file_get_contents("php://input"));
 
 if($good["error"]) $http->Bad($good);
