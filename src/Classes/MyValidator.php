@@ -35,8 +35,7 @@ class MyValidator
                 new Constraints\Regex('(\d{'.strlen($request["product"]).'})')
             ],
             'taxNumber' => [
-                new Constraints\Length(min:$param["taxNumberLength"],max: $param["taxNumberLength"]),
-                new Constraints\Regex('(([A-Z]{'.$param["taxNumberLength"]-$param["digitsLength"].'})\d{'.$param["digitsLength"].'})')
+                new Constraints\Regex('/^[A-Z]{'.$param["taxNumberLength"]-$param["digitsLength"].'}\d{'.$param["digitsLength"].'}$/')
             ]];
 
         // добавление проверки необязательных полей (купон)
