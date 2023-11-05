@@ -40,7 +40,7 @@ class MyValidator
 
         // добавление проверки необязательных полей (купон)
         if($request["couponCode"])
-            $checkList['couponCode'] = [   new Constraints\Regex('([A-Z]\d{2})')];
+            $checkList['couponCode'] = [   new Constraints\Regex('/^[A-Z]\d{2}$/')];
 
         if($request["paymentProcessor"])
             $checkList['paymentProcessor'] = [   new Constraints\Regex('([A-z]*)')];
